@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { Component, ReactNode, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from '@/styles/ThemeProvider';
 
@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
-    this.setState({ error, errorInfo });
+    this.setState({ hasError: true, error, errorInfo });
     
     // Log error to monitoring service (e.g., Sentry)
     console.error('ErrorBoundary caught an error:', error, errorInfo);
@@ -67,7 +67,19 @@ interface ErrorFallbackProps {
 }
 
 function ErrorFallback({ error, onRetry }: ErrorFallbackProps) {
-  const { colors } = useTheme();
+  // Use default colors to avoid ThemeProvider context failure
+  const colors = {
+    background: '#ffffff',
+    text: '#111827',
+    textSecondary: '#6b7280',
+    textTertiary: '#9ca3af',
+    border: '#e5e7eb',
+    primary: '#6366f1',
+    error: '#ef4444',
+    success: '#10b981',
+    warning: '#f59e0b',
+    info: '#3b82f6',
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -184,7 +196,25 @@ export function withErrorBoundary<P extends object>(
 
 // Hook for handling errors in functional components
 export function useErrorHandler() {
-  const { colors } = useTheme();
+  // Get theme safely (don't fail if not in ThemeProvider)
+  let colors;
+  try {
+    const themeContext = useTheme();
+    colors = themeContext.colors;
+  } catch (err) {
+    colors = {
+      background: '#ffffff',
+      text: '#111827',
+      textSecondary: '#6b7280',
+      textTertiary: '#9ca3af',
+      border: '#e5e7eb',
+      primary: '#6366f1',
+      error: '#ef4444',
+      success: '#10b981',
+      warning: '#f59e0b',
+      info: '#3b82f6',
+    };
+  }
 
   const handleError = (error: Error, errorInfo?: any) => {
     console.error('Error handled by useErrorHandler:', error, errorInfo);
@@ -199,12 +229,7 @@ export function useErrorHandler() {
     }
   };
 
-  const ErrorFallback = ({ onRetry }: { onRetry: () => void }) => (
-    <ErrorFallback error={undefined} onRetry={onRetry} />
-  );
-
   return {
     handleError,
-    ErrorFallback,
   };
 }
