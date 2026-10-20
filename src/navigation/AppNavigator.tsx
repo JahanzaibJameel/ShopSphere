@@ -19,18 +19,26 @@ import { ForgotPasswordScreen } from '@/screens/auth/ForgotPasswordScreen';
 import { OTPVerificationScreen } from '@/screens/auth/OTPVerificationScreen';
 import { BiometricSetupScreen } from '@/screens/auth/BiometricSetupScreen';
 import { HomeScreen } from '@/screens/HomeScreen';
+import { NotificationCenterScreen } from '@/screens/NotificationCenterScreen';
+import { WishlistScreen } from '@/screens/WishlistScreen';
 import { CategoriesScreen } from '@/screens/CategoriesScreen';
 import { CartScreen } from '@/screens/cart/CartScreen';
 import { OrdersScreen } from '@/screens/orders/OrdersScreen';
+import { SettingsScreen } from '@/screens/profile/SettingsScreen';
+import { LanguageSelectorScreen } from '@/screens/profile/LanguageSelectorScreen';
 import { ProfileScreen } from '@/screens/profile/ProfileScreen';
+import { PaymentMethodsScreen } from '@/screens/profile/PaymentMethodsScreen';
 import { ProductDetailsScreen } from '@/screens/ProductDetailsScreen';
+import { ProductComparisonScreen } from '@/screens/ProductComparisonScreen';
+import { ProductReviewsScreen } from '@/screens/ProductReviewsScreen';
 import { SearchScreen } from '@/screens/SearchScreen';
+import { VisualSearchScreen } from '@/screens/VisualSearchScreen';
 import { CameraScreen } from '@/screens/CameraScreen';
 import { ARViewerScreen } from '@/screens/ARViewerScreen';
 import { CheckoutScreen } from '@/screens/checkout/CheckoutScreen';
 import { OrderDetailsScreen } from '@/screens/orders/OrderDetailsScreen';
 import { OrderTrackingScreen } from '@/screens/orders/OrderTrackingScreen';
-import { SettingsScreen } from '@/screens/profile/SettingsScreen';
+import { AddressBookScreen } from '@/screens/profile/AddressBookScreen';
 
 const storage = new MMKV({ id: 'app-storage' });
 
@@ -179,7 +187,7 @@ function RootStack() {
             component={ProductDetailsScreen}
             options={{ 
               headerShown: true,
-              header: ({ navigation }) => (
+              header: ({ navigation }: any) => (
                 <CustomHeader
                   title="Product Details"
                   onBackPress={() => navigation.goBack()}
@@ -193,7 +201,7 @@ function RootStack() {
             component={SearchScreen}
             options={{ 
               headerShown: true,
-              header: ({ navigation }) => (
+              header: ({ navigation }: any) => (
                 <CustomHeader
                   title="Search"
                   onBackPress={() => navigation.goBack()}
@@ -207,7 +215,7 @@ function RootStack() {
             component={CameraScreen}
             options={{ 
               headerShown: true,
-              header: ({ navigation }) => (
+              header: ({ navigation }: any) => (
                 <CustomHeader
                   title="Camera"
                   onBackPress={() => navigation.goBack()}
@@ -221,7 +229,7 @@ function RootStack() {
             component={ARViewerScreen}
             options={{ 
               headerShown: true,
-              header: ({ navigation }) => (
+              header: ({ navigation }: any) => (
                 <CustomHeader
                   title="AR Viewer"
                   onBackPress={() => navigation.goBack()}
@@ -235,7 +243,7 @@ function RootStack() {
             component={CheckoutScreen}
             options={{ 
               headerShown: true,
-              header: ({ navigation }) => (
+              header: ({ navigation }: any) => (
                 <CustomHeader
                   title="Checkout"
                   onBackPress={() => navigation.goBack()}
@@ -249,7 +257,7 @@ function RootStack() {
             component={OrderDetailsScreen}
             options={{ 
               headerShown: true,
-              header: ({ navigation }) => (
+              header: ({ navigation }: any) => (
                 <CustomHeader
                   title="Order Details"
                   onBackPress={() => navigation.goBack()}
@@ -263,7 +271,7 @@ function RootStack() {
             component={OrderTrackingScreen}
             options={{ 
               headerShown: true,
-              header: ({ navigation }) => (
+              header: ({ navigation }: any) => (
                 <CustomHeader
                   title="Track Order"
                   onBackPress={() => navigation.goBack()}
@@ -273,11 +281,74 @@ function RootStack() {
             }}
           />
           <Stack.Screen 
+            name="Wishlist" 
+            component={WishlistScreen}
+            options={{ 
+              headerShown: true,
+              header: ({ navigation }: any) => (
+                <CustomHeader
+                  title="Wishlist"
+                  onBackPress={() => navigation.goBack()}
+                  showBack={true}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen 
+            name="ProductReviews" 
+            component={ProductReviewsScreen}
+            options={{ 
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen 
+            name="NotificationCenter" 
+            component={NotificationCenterScreen}
+            options={{ 
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen 
+            name="AddressBook" 
+            component={AddressBookScreen}
+            options={{ 
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen 
+            name="PaymentMethods" 
+            component={PaymentMethodsScreen}
+            options={{ 
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen 
+            name="ProductComparison" 
+            component={ProductComparisonScreen}
+            options={{ 
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen 
+            name="LanguageSelector" 
+            component={LanguageSelectorScreen}
+            options={{ 
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen 
+            name="VisualSearch" 
+            component={VisualSearchScreen}
+            options={{ 
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen 
             name="Settings" 
             component={SettingsScreen}
             options={{ 
               headerShown: true,
-              header: ({ navigation }) => (
+              header: ({ navigation }: any) => (
                 <CustomHeader
                   title="Settings"
                   onBackPress={() => navigation.goBack()}
