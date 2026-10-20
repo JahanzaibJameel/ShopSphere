@@ -5,9 +5,18 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { useTheme } from '@/styles/ThemeProvider';
 import { useAuth } from '@/store/AuthProvider';
+
+function withAlpha(hex: string, alpha: number): string {
+  const hexColor = hex.replace('#', '');
+  const r = parseInt(hexColor.substring(0, 2), 16);
+  const g = parseInt(hexColor.substring(2, 4), 16);
+  const b = parseInt(hexColor.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 interface DrawerContentProps {
   navigation: any;
@@ -84,7 +93,7 @@ export function DrawerContent({ navigation }: DrawerContentProps) {
           style={[
             styles.menuItem,
             styles.logoutItem,
-            { backgroundColor: colors.error + '20', borderColor: colors.error }
+            { backgroundColor: withAlpha(colors.error, 0.12), borderColor: colors.error }
           ]}
           onPress={handleLogout}
         >
