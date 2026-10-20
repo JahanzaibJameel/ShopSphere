@@ -1,1 +1,80 @@
 node_modules
+
+# Dependencies
+# Uncomment if using package-lock.json
+# package-lock.json
+# Uncomment if using yarn.lock
+# yarn.lock
+# Uncomment if using pnpm
+# pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+.env.*.local
+
+# Expo
+.expo
+.expo-shared
+.expo-go
+webapp
+
+# Build outputs
+dist
+build
+web-build
+coverage
+
+# Native build artifacts
+android/
+ios/
+*.apk
+*.aab
+*.ipa
+
+# Metro
+.metro
+metro.config.js.local
+
+# Bundle files
+*.js.bundle
+*.bundle
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+*.launch
+.history
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+*.lcov
+.nyc_output/
+.e2e
+
+# Sentry
+.sentryclirc
+.sentry
+
+# EAS
+eas.json.local
