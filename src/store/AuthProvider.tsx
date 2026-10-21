@@ -40,7 +40,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const loadAuthState = () => {
       try {
         const savedToken = storage.getString('token');
-        const savedRefreshToken = storage.getString('refreshToken');
+        const savedRefreshToken = storage.getString('refreshToken') || null;
         const savedUser = storage.getString('user');
 
         if (savedToken && savedUser) {
