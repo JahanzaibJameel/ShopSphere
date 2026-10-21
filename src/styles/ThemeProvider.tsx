@@ -20,6 +20,9 @@ const lightTheme: Theme = {
     success: '#10b981',
     warning: '#f59e0b',
     info: '#3b82f6',
+    white: '#ffffff',
+    black: '#000000',
+    backgroundSecondary: '#f3f4f6',
   },
   spacing: {
     xs: 4,
@@ -54,6 +57,9 @@ const darkTheme: Theme = {
     success: '#34d399',
     warning: '#fbbf24',
     info: '#60a5fa',
+    white: '#ffffff',
+    black: '#000000',
+    backgroundSecondary: '#f3f4f6',
   },
 };
 
@@ -77,6 +83,13 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const deviceColorScheme = useColorScheme();
   const [themeMode, setThemeModeState] = useState<ThemeMode>('system');
 
+  const isDarkTheme = (mode: ThemeMode): boolean => {
+    if (mode === 'system') {
+      return deviceColorScheme === 'dark';
+    }
+    return mode === 'dark';
+  };
+
   const getTheme = (mode: ThemeMode): Theme => {
     if (mode === 'system') {
       return deviceColorScheme === 'dark' ? darkTheme : lightTheme;
@@ -97,7 +110,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, []);
 
   const theme = getTheme(themeMode);
-  const isDark = theme === darkTheme;
+  const isDark = isDarkTheme(themeMode);
 
   const value: ThemeContextType = {
     theme,
