@@ -488,6 +488,9 @@ export interface Theme {
     success: string;
     warning: string;
     info: string;
+    white: string;
+    black: string;
+    backgroundSecondary: string;
   };
   spacing: Record<string, number>;
   fonts: {
