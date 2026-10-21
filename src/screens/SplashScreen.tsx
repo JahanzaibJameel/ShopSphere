@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, Text, StyleSheet, Animated, Platform } from 'react-native';
 import { useTheme } from '@/styles/ThemeProvider';
 
 export function SplashScreen() {
@@ -9,16 +9,19 @@ export function SplashScreen() {
 
   useEffect(() => {
     const startAnimation = () => {
+      // Only use native driver on native platforms (not web)
+      const useNativeDriver = Platform.OS !== 'web';
+      
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver,
         }),
         Animated.timing(scaleAnim, {
           toValue: 1,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver,
         }),
       ]).start();
     };
