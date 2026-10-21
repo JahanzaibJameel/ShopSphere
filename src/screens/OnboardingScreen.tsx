@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Animated, Dimensions } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 import { useTheme } from '@/styles/ThemeProvider';
 
@@ -36,6 +36,8 @@ const onboardingData = [
   },
 ];
 
+const { width: screenWidth } = Dimensions.get('window');
+
 export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
   const { colors } = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -46,7 +48,11 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
     if (currentIndex < onboardingData.length - 1) {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
-      flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
+      // Use scrollToOffset instead of scrollToIndex for better web compatibility
+      flatListRef.current?.scrollToOffset({
+        offset: nextIndex * screenWidth,
+        animated: true,
+      });
     } else {
       handleComplete();
     }
@@ -66,8 +72,20 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
     { useNativeDriver: false }
   );
 
+  const handleMomentumScrollEnd = (event: any) => {
+    const contentOffset = event.nativeEvent.contentOffset.x;
+    const index = Math.round(contentOffset / screenWidth);
+    setCurrentIndex(index);
+  };
+
+  const getItemLayout = (_data: any, index: number) => ({
+    length: screenWidth,
+    offset: screenWidth * index,
+    index,
+  });
+
   const renderItem = ({ item }: { item: typeof onboardingData[0] }) => (
-    <View style={[styles.slide, { backgroundColor: colors.background }]}>
+    <View style={[styles.slide, { width: screenWidth, backgroundColor: colors.background }]}>
       <Text style={styles.emoji}>{item.emoji}</Text>
       <Text style={[styles.title, { color: colors.text }]}>{item.title}</Text>
       <Text style={[styles.description, { color: colors.textSecondary }]}>
@@ -78,13 +96,13 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
 
   const renderDot = (index: number) => {
     const opacity = scrollX.interpolate({
-      inputRange: [(index - 1) * 400, index * 400, (index + 1) * 400],
+      inputRange: [(index - 1) * screenWidth, index * screenWidth, (index + 1) * screenWidth],
       outputRange: [0.3, 1, 0.3],
       extrapolate: 'clamp',
     });
 
     const scale = scrollX.interpolate({
-      inputRange: [(index - 1) * 400, index * 400, (index + 1) * 400],
+      inputRange: [(index - 1) * screenWidth, index * screenWidth, (index + 1) * screenWidth],
       outputRange: [0.8, 1.2, 0.8],
       extrapolate: 'clamp',
     });
@@ -119,9 +137,14 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
+        getItemLayout={getItemLayout}
         onScroll={handleScroll}
+        onMomentumScrollEnd={handleMomentumScrollEnd}
         scrollEventThrottle={16}
         keyExtractor={(item) => item.id}
+        snapToInterval={screenWidth}
+        snapToAlignment="start"
+        decelerationRate="fast"
       />
 
       <View style={styles.dotsContainer}>
@@ -158,7 +181,6 @@ const styles = StyleSheet.create({
   },
   slide: {
     flex: 1,
-    width: 400,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 40,
